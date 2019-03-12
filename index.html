@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<table id="table">
+
+</table>
+</body>
+<script src="js/jq.js"></script>
+<script>
+    $(document).ready(function () {
+        snake.tableInit();
+        snake.gameInit();
+        snake.addFood();
+        snake.run();
+        setInterval(function () {
+            snake.run();
+        },500);
+    });
+    var snake = {
+        w:20,
+        h:20,
+        tableId:'table',
+        head:{
+            x:2,
+            y:0
+        },
+        body:[
+            {x:1,y:0},
+            {x:0,y:0}
+        ],
+        bodyList:['10','00'],
+        food:{},
+        setWidth:function (width) {
+            this.w = width;
+        },
+        setHeight:function (height) {
+            this.h = height
+        },
+        setTableId:function (tableId) {
+            this.tableId = tableId;
+        },
+        addFood:function () {
+            var _this = this;
+            var maxX = _this.w-1;
+            var maxY = _this.h-1;
+            function returnXY() {
+                var x = parseInt(Math.random()*(maxX+1),10);
+                var y = parseInt(Math.random()*(maxY+1),10);
+                return [x,y]
+            }
+            var xy = returnXY();
+            var power = true;
+            $.each(_this.bodyList,function (k,v) {
+                if(v==xy[0]+''+xy[1]){
+                    power = false;
+                }
+            });
+            if(power){
+                _this.food = xy;
+            }else{
+                _this.addFood();
+            }
+        },
+        gameInit:function () {
+            var _this = this;
+            $(document).keydown(function(event){
+                var x =_this.head.x;
+                var y =_this.head.y;
+                var new_x = x;
+                var new_y = y;
+                if(event.keyCode == 87){
+                    new_y = _this.head.y-1
+                }
+                if(event.keyCode == 83){
+                    new_y = _this.head.y+1
+                }
+                if(event.keyCode == 65){
+                    new_x = _this.head.x-1
+                }
+                if(event.keyCode == 68){
+                    new_x = _this.head.x+1
+                }
+                if(new_x==_this.head.x&&new_y==_this.head.y){
+                    return false;
+                }
+                _this.initSelfXY(new_x,new_y);
+                _this.eat();
+                _this.rendering();
+            });
+        },
+        tableInit:function () {
+            var _this = this;
+            var tableStr = '';
+            for(var i = 0;i<_this.h;i++){
+                tableStr += '<tr class="trClass">';
+                for(var j = 0;j<_this.w;j++){
+                    tableStr += '<td class="tdClass">&nbsp;</td>';
+                }
+                tableStr += '</tr>';
+            }
+            $('#'+_this.tableId).append(tableStr);
+            //init css
+            $('body').append('    <style>\n' +
+                '        .trClass{\n' +
+                '            height: 40px;\n' +
+                '        }\n' +
+                '        .tdClass{\n' +
+                '            background:grey;\n' +
+                '            width: 40px;\n' +
+                '        }\n' +
+                '    </style>')
+        },
+        gameOver:function () {
+            alert('game over');
+            location.reload();
+        },
+        run:function () {
+            var _this = this;
+            if(_this.head.x>_this.w||_this.head.x<0){
+                _this.gameOver()
+            }
+            if(_this.head.y>_this.h||_this.head.y<0){
+                _this.gameOver()
+            }
+            _this.move();
+            _this.eat();
+            _this.rendering();
+        },
+        rendering:function () {
+            var _this = this;
+            var table = $('#table');
+            var td = $('#table td');
+            td.css({background:'grey'});
+            $($($('#table').find('tr')[_this.food[1]]).find('td')[_this.food[0]]).css({background:'#fff'});
+            //head
+            $($(table.find('tr')[_this.head.y]).find('td')[_this.head.x]).css({background:'#fff'});
+            //body
+            $.each(_this.body,function (k,v) {
+                $($(table.find('tr')[v.y]).find('td')[v.x]).css({background:'#fff'});
+            })
+        },
+        eat:function () {
+            var _this = this;
+            $.each(_this.bodyList,function (k,v) {
+                if(v==_this.head.x+''+_this.head.y){
+                    _this.die()
+                }
+            });
+            if(_this.head.x==_this.food[0]){
+                if(_this.head.y==_this.food[1]){
+                    _this.addFood();
+                    _this.body.push({x:-1,y:-1});
+                    _this.bodyList.push('-1-1');
+              }
+            }
+        },
+        move:function () {
+            var _this = this;
+            var x =_this.head.x-_this.body[0].x;
+            var y =_this.head.y-_this.body[0].y;
+            var new_x = _this.head.x;
+            var new_y = _this.head.y;
+            if(x==0){
+                if(y>0){
+                    new_y = _this.head.y+1
+                }else{
+                    new_y = _this.head.y-1
+                }
+            }else if(x>0){
+                new_x = _this.head.x+1
+            }else{
+                new_x = _this.head.x-1
+            }
+            _this.initSelfXY(new_x,new_y)
+        },
+        initSelfXY:function (newX,newY) {
+            var _this = this;
+            var newBody = [{x:_this.head.x,y:_this.head.y}];
+            _this.bodyList = [_this.head.x+''+_this.head.y];
+            $.each(_this.body,function (k,v) {
+                if(k!=_this.body.length-1){
+                    newBody.push(v);
+                    _this.bodyList.push(v.x+''+v.y);
+                }
+            });
+            _this.body = newBody;
+            _this.head.x = newX;
+            _this.head.y = newY;
+        }
+    };    
+
+</script>
+</html>
