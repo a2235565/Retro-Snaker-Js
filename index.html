@@ -148,7 +148,7 @@
             var _this = this;
             $.each(_this.bodyList,function (k,v) {
                 if(v==_this.head.x+''+_this.head.y){
-                    _this.die()
+                    _this.gameOver()
                 }
             });
             if(_this.head.x==_this.food[0]){
