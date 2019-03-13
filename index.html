@@ -19,7 +19,7 @@
         snake.run();
         setInterval(function () {
             snake.run();
-        },500);
+        },300);
     });
     var snake = {
         w:20,
@@ -87,6 +87,12 @@
                 }
                 if(new_x==_this.head.x&&new_y==_this.head.y){
                     return false;
+                }
+                if(_this.head.x>=_this.w||_this.head.x<0){
+                    _this.gameOver()
+                }
+                if(_this.head.y>=_this.h||_this.head.y<0){
+                    _this.gameOver()
                 }
                 _this.initSelfXY(new_x,new_y);
                 _this.eat();
