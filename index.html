@@ -27,13 +27,13 @@ a       s      d
         snake.gameInit();
         snake.addFood();
         snake.run();
-        setInterval(function () {
-            snake.run();
-        },300);
+         snake.interval =  setInterval(function () {
+             snake.run();
+         },80);
     });
     var snake = {
-        w:20,
-        h:20,
+        w:15,
+        h:15,
         tableId:'table',
         head:{
             x:2,
@@ -133,7 +133,8 @@ a       s      d
         },
         gameOver:function () {
             alert('game over');
-            location.reload();
+            // location.reload();
+            clearInterval(      snake.interval);
         },
         run:function () {
             var _this = this;
@@ -162,8 +163,8 @@ a       s      d
         },
         eat:function () {
             var _this = this;
-            $.each(_this.bodyList,function (k,v) {
-                if(v==_this.head.x+','+_this.head.y){
+            $.each(_this.body,function (k,v) {
+                if(v.x==_this.head.x&&v.y==_this.head.y){
                     _this.gameOver()
                 }
             });
@@ -173,7 +174,7 @@ a       s      d
                     _this.body.push({x:-1,y:-1});
                     _this.bodyList.push('-1,-1');
                     $('#sc').html($('#sc').html()*1+1);
-               }
+                }
             }
         },
         move:function () {
@@ -209,7 +210,7 @@ a       s      d
             _this.head.x = newX;
             _this.head.y = newY;
         }
-    };    
+    };
 
 </script>
 </html>
