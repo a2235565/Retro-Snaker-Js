@@ -66,7 +66,7 @@ a       s      d
             var xy = returnXY();
             var power = true;
             $.each(_this.bodyList,function (k,v) {
-                if(v==xy[0]+''+xy[1]){
+                if(v==xy[0]+','+xy[1]){
                     power = false;
                 }
             });
@@ -163,7 +163,7 @@ a       s      d
         eat:function () {
             var _this = this;
             $.each(_this.bodyList,function (k,v) {
-                if(v==_this.head.x+''+_this.head.y){
+                if(v==_this.head.x+','+_this.head.y){
                     _this.gameOver()
                 }
             });
@@ -171,7 +171,7 @@ a       s      d
                 if(_this.head.y==_this.food[1]){
                     _this.addFood();
                     _this.body.push({x:-1,y:-1});
-                    _this.bodyList.push('-1-1');
+                    _this.bodyList.push('-1,-1');
                     $('#sc').html($('#sc').html()*1+1);
                }
             }
@@ -198,11 +198,11 @@ a       s      d
         initSelfXY:function (newX,newY) {
             var _this = this;
             var newBody = [{x:_this.head.x,y:_this.head.y}];
-            _this.bodyList = [_this.head.x+''+_this.head.y];
+            _this.bodyList = [_this.head.x+','+_this.head.y];
             $.each(_this.body,function (k,v) {
                 if(k!=_this.body.length-1){
                     newBody.push(v);
-                    _this.bodyList.push(v.x+''+v.y);
+                    _this.bodyList.push(v.x+','+v.y);
                 }
             });
             _this.body = newBody;
