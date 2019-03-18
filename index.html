@@ -45,13 +45,32 @@ a &nbsp;&nbsp;      s  &nbsp;&nbsp;    d<br/>
         snake.addFood();
         snake.buttonInit();
         snake.run();
-         snake.interval =  setInterval(function () {
-             snake.run();
-         },80);
+        var ua = navigator.userAgent;
+
+        var ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
+
+        isIphone =!ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
+
+        isAndroid = ua.match(/(Android)\s+([\d.]+)/),
+
+        isMobile = isIphone || isAndroid;
+
+        if(isMobile){
+            snake.setHeight(8);
+            snake.setWidth(8);
+            snake.interval =  setInterval(function () {
+                snake.run();
+            },800);
+        }else{
+            snake.interval =  setInterval(function () {
+                snake.run();
+            },50);
+        }
+
     });
     var snake = {
-        w:10,
-        h:10,
+        w:20,
+        h:20,
         tableId:'table',
         head:{
             x:2,
