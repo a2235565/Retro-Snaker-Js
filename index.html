@@ -41,22 +41,14 @@ a &nbsp;&nbsp;      s  &nbsp;&nbsp;    d<br/>
 <script>
     $(document).ready(function () {
 
-        var ua = navigator.userAgent;
 
-        var ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
-
-        isIphone =!ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
-
-        isAndroid = ua.match(/(Android)\s+([\d.]+)/),
-
-        isMobile = isIphone || isAndroid;
         var s = 80;
-        if(isMobile){
+        if(tools.isMobile()){
             snake.setHeight(8);
             snake.setWidth(8);
             s = 1000;
         }else{
-            s = 50;
+            s = 100;
             $('#caozuo').hide();
         }
         snake.tableInit();
@@ -67,6 +59,20 @@ a &nbsp;&nbsp;      s  &nbsp;&nbsp;    d<br/>
             snake.run();
         },s);
     });
+    var  tools = {
+        isMobile:function () {
+            var ua = navigator.userAgent;
+
+            var ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
+
+                isIphone =!ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
+
+                isAndroid = ua.match(/(Android)\s+([\d.]+)/),
+
+                isMobile = isIphone || isAndroid;
+            return isMobile;
+        }
+    };
     var snake = {
         w:20,
         h:20,
@@ -247,6 +253,16 @@ a &nbsp;&nbsp;      s  &nbsp;&nbsp;    d<br/>
                     _this.body.push({x:-1,y:-1});
                     _this.bodyList.push('-1,-1');
                     $('#sc').html($('#sc').html()*1+1);
+                    if(_this.body.length%12==0){
+                        let  s = 300;
+                        if(tools.isMobile()){
+                            s = 800;
+                        }
+                        setInterval(function () {
+                            snake.run();
+                        },s);
+                        console.log('加速');
+                    }
                 }
             }
         },
