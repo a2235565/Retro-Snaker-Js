@@ -40,11 +40,7 @@ a &nbsp;&nbsp;      s  &nbsp;&nbsp;    d<br/>
 <script src="js/jq.js"></script>
 <script>
     $(document).ready(function () {
-        snake.tableInit();
-        snake.gameInit();
-        snake.addFood();
-        snake.buttonInit();
-        snake.run();
+
         var ua = navigator.userAgent;
 
         var ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
@@ -54,19 +50,21 @@ a &nbsp;&nbsp;      s  &nbsp;&nbsp;    d<br/>
         isAndroid = ua.match(/(Android)\s+([\d.]+)/),
 
         isMobile = isIphone || isAndroid;
-
+        var s = 80;
         if(isMobile){
             snake.setHeight(8);
             snake.setWidth(8);
-            snake.interval =  setInterval(function () {
-                snake.run();
-            },800);
+            s = 1000;
         }else{
-            snake.interval =  setInterval(function () {
-                snake.run();
-            },50);
+            s = 50;
         }
-
+        snake.tableInit();
+        snake.gameInit();
+        snake.addFood();
+        snake.buttonInit();
+        snake.interval =  setInterval(function () {
+            snake.run();
+        },s);
     });
     var snake = {
         w:20,
