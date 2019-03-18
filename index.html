@@ -7,7 +7,7 @@
 </head>
 <body>
 <h1>
-<pre style="float:reight">
+<pre style="float:right">
 操作：
         w
 a       s      d
@@ -65,8 +65,8 @@ a       s      d
             }
             var xy = returnXY();
             var power = true;
-            $.each(_this.bodyList,function (k,v) {
-                if(v==xy[0]+','+xy[1]){
+            $.each(_this.body,function (k,v) {
+                if(v.x==xy[0]&&v.y==xy[1]){
                     power = false;
                 }
             });
@@ -153,9 +153,10 @@ a       s      d
             var table = $('#table');
             var td = $('#table td');
             td.css({background:'grey'});
+            //food
             $($($('#table').find('tr')[_this.food[1]]).find('td')[_this.food[0]]).css({background:'#fff'});
             //head
-            $($(table.find('tr')[_this.head.y]).find('td')[_this.head.x]).css({background:'#fff'});
+            $($(table.find('tr')[_this.head.y]).find('td')[_this.head.x]).css({background:'#009'});
             //body
             $.each(_this.body,function (k,v) {
                 $($(table.find('tr')[v.y]).find('td')[v.x]).css({background:'#fff'});
