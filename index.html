@@ -3,22 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 </head>
+<style>
+    #caozuo{
+        font-size: 4em;
+        text-align: center;
+        position: fixed;
+        bottom: 0px;
+        width: 100%;
+    }
+</style>
 <body>
-<h1>
-<pre style="float:right">
-操作：
-        w
-a       s      d
-规则:触边界死亡 ,反向死亡，触碰身体死亡
+
+<div >
+操作：<br/>
+&nbsp;&nbsp; w<br/>
+a &nbsp;&nbsp;      s  &nbsp;&nbsp;    d<br/>
+规则:触边界死亡 ,反向死亡，触碰身体死亡<br/>
 分数：<span id='sc'>0</span>
-</pre>
-</h1>
+
+
+
+</div>
+
 
 <table id="table">
 
 </table>
+<div id="caozuo">
+<span class="caozuoButton" attr="up">⬆️</span><br/>
+<span class="caozuoButton" attr="left" >⬅️</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="caozuoButton" attr="right" >➡️</span><br/>
+<span  class="caozuoButton" attr="bottom"   >⬇️</span>
+</div>
 </body>
 <script src="js/jq.js"></script>
 <script>
@@ -26,6 +43,7 @@ a       s      d
         snake.tableInit();
         snake.gameInit();
         snake.addFood();
+        snake.buttonInit();
         snake.run();
          snake.interval =  setInterval(function () {
              snake.run();
@@ -93,6 +111,39 @@ a       s      d
                     new_x = _this.head.x-1
                 }
                 if(event.keyCode == 68){
+                    new_x = _this.head.x+1
+                }
+                if(new_x==_this.head.x&&new_y==_this.head.y){
+                    return false;
+                }
+                if(_this.head.x>=_this.w||_this.head.x<0){
+                    _this.gameOver()
+                }
+                if(_this.head.y>=_this.h||_this.head.y<0){
+                    _this.gameOver()
+                }
+                _this.initSelfXY(new_x,new_y);
+                _this.eat();
+                _this.rendering();
+            });
+        },buttonInit(){
+            var _this = this;
+            $('.caozuoButton').on('click',function(event){
+                var x =_this.head.x;
+                var y =_this.head.y;
+                var new_x = x;
+                var new_y = y;
+                let attr=$(this).attr('attr');
+                if(attr == 'up'){
+                    new_y = _this.head.y-1
+                }
+                if(attr == 'bottom'){
+                    new_y = _this.head.y+1
+                }
+                if(attr == 'left'){
+                    new_x = _this.head.x-1
+                }
+                if(attr == 'right'){
                     new_x = _this.head.x+1
                 }
                 if(new_x==_this.head.x&&new_y==_this.head.y){
