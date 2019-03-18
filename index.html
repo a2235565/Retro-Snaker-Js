@@ -57,6 +57,7 @@ a &nbsp;&nbsp;      s  &nbsp;&nbsp;    d<br/>
             s = 1000;
         }else{
             s = 50;
+            $('#caozuo').hide();
         }
         snake.tableInit();
         snake.gameInit();
@@ -201,8 +202,11 @@ a &nbsp;&nbsp;      s  &nbsp;&nbsp;    d<br/>
         },
         gameOver:function () {
             alert('game over');
-             location.reload();
-            //clearInterval(      snake.interval);
+             // location.reload();
+            clearInterval(snake.interval);
+            if(confirm('是否重新开始')){
+                location.reload();
+            }
         },
         run:function () {
             var _this = this;
